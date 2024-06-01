@@ -1,3 +1,7 @@
+
+
+// platform And colition
+
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -5,7 +9,6 @@ canvas.width = window.innerWidth-0;
 canvas.height = window.innerHeight-3.1;
 
 const gravity = 0.5;
-let scrollOffset = 0;
 
 class Player{
     constructor() {
@@ -40,12 +43,12 @@ class Player{
 }
 
 class Platform{
-    constructor(x,y){
+    constructor(){
         this.height =20
         this.width = 200
         this.position={
-            x: x,
-            y: y,
+            x: 200,
+            y: 200,
         }
     }
 
@@ -58,8 +61,7 @@ class Platform{
 
 
 const player = new Player();
-// const platform1 = new Platform();
-const platforms = [new Platform(100,300), new Platform(340,200), new Platform( 400, 440)];
+const platform1 = new Platform();
 
 const keys = {
     right: {
@@ -76,43 +78,23 @@ function animate() {
     // console.log('go')
     ctx.clearRect(0,0,canvas.width,canvas.height);
     player.update();
-    // platform1.draw();
-
-    platforms.forEach(platform => {
-        platform.draw();
-    })
-
-    if (keys.right.pressed && player.position.x < 500) {
-        player.velocity.x=5
-    } else if ( keys.left.pressed && player.position.x >100 ) {
+    platform1.draw();
+    if (keys.right.pressed) {
+        player.velocity.x =5
+    } else if ( keys.left.pressed ) {
         player.velocity.x = -5
     }else {
-        player.velocity.x = 0
-        if (keys.right.pressed) {
-            platforms.forEach(platform => {
-                platform.position.x -= 5
-                scrollOffset+=5
-            })
-        } else if (keys.left.pressed) {
-            platforms.forEach(platform => {
-                platform.position.x +=5
-                scrollOffset -= 5;
-            })
-        }
+        player.velocity.x =0
     }
 
-    platforms.forEach(platform => {    
-        if (
-            player.position.y + player.height <= platform.position.y &&
-            player.position.y + player.height + player.velocity.y >= platform.position.y &&
-            player.position.x + player.width >= platform.position.x &&
-            player.position.x <= platform.position.x + platform.width
-        ) {
-            player.velocity.y =0
-        }
-    })
-
-    if (scrollOffset > 2000) console.log('WIN') 
+    if (
+        player.position.y + player.height <= platform1.position.y &&
+        player.position.y + player.height + player.velocity.y >= platform1.position.y &&
+        player.position.x + player.width >= platform1.position.x &&
+        player.position.x <= platform1.position.x + platform1.width
+    ) {
+        player.velocity.y =0
+    }
 }
 
 animate()
@@ -123,18 +105,18 @@ window.addEventListener('keydown', (e) => {
     // console.log(e.code)
     switch (e.code) {
         case 'ArrowUp':
-            // console.log('up')
+            console.log('up')
             player.velocity.y -=10
             break;
         case 'ArrowDown':
-            // console.log('down')
+            console.log('down')
             break;
         case 'ArrowLeft':
-            // console.log('left')
+            console.log('left')
             keys.left.pressed = true
             break;
         case 'ArrowRight':
-            // console.log('right')
+            console.log('right')
             keys.right.pressed = true
             // player.velocity.x =1
             break;

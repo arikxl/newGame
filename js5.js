@@ -1,3 +1,7 @@
+
+
+// scroll platforms and array
+
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -5,7 +9,6 @@ canvas.width = window.innerWidth-0;
 canvas.height = window.innerHeight-3.1;
 
 const gravity = 0.5;
-let scrollOffset = 0;
 
 class Player{
     constructor() {
@@ -83,20 +86,19 @@ function animate() {
     })
 
     if (keys.right.pressed && player.position.x < 500) {
-        player.velocity.x=5
+        player.velocity.x =5
     } else if ( keys.left.pressed && player.position.x >100 ) {
         player.velocity.x = -5
     }else {
         player.velocity.x = 0
         if (keys.right.pressed) {
             platforms.forEach(platform => {
-                platform.position.x -= 5
-                scrollOffset+=5
+                platform.position.x -=5
             })
         } else if (keys.left.pressed) {
             platforms.forEach(platform => {
                 platform.position.x +=5
-                scrollOffset -= 5;
+
             })
         }
     }
@@ -111,8 +113,6 @@ function animate() {
             player.velocity.y =0
         }
     })
-
-    if (scrollOffset > 2000) console.log('WIN') 
 }
 
 animate()
