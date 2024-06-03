@@ -1,3 +1,5 @@
+// BACKGROUND  AND PARALLAX
+
 const platformImg = new Image();
 platformImg.src = '/img/platform.png'
 // console.log('platform:', platformImg.src)
