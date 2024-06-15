@@ -1,3 +1,7 @@
+
+// LEVEL CREATION 
+
+
 const platformImg = new Image();
 platformImg.src = '/img/platform.png'
 // console.log('platform:', platformImg.src)
@@ -135,11 +139,7 @@ function animate() {
 
     if (keys.right.pressed && player.position.x < 500) {
         player.velocity.x= player.speed
-    } else if (
-        (keys.left.pressed && player.position.x > 100) ||
-       (keys.left.pressed && scrollOffset===0 && player.position.x > 0)
-        
-    ) {
+    } else if ( keys.left.pressed && player.position.x >100 ) {
         player.velocity.x = -player.speed
     }else {
         player.velocity.x = 0
@@ -151,7 +151,7 @@ function animate() {
             bgs.forEach(bg => {
                 bg.position.x -= player.speed*0.66
             })
-        } else if (keys.left.pressed && scrollOffset > 0) {
+        } else if (keys.left.pressed) {
             scrollOffset -= player.speed;
             platforms.forEach(platform => {
                 platform.position.x +=player.speed
