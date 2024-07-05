@@ -1,3 +1,7 @@
+import { test, Goomba} from './goomba.js';
+
+// test('arik')
+
 const platformImg = new Image();
 platformImg.src = '/img/platform.png'
 // console.log('platform:', platformImg.src)
@@ -19,13 +23,13 @@ standRightImg.src = 'img/spriteStandRight.png'
 
 
 
-const canvas = document.querySelector('canvas');
-const ctx = canvas.getContext('2d');
+export const canvas = document.querySelector('canvas');
+export const ctx = canvas.getContext('2d');
 
 canvas.width = 1024;
 canvas.height = 576;
 
-const gravity = 0.5;
+export const gravity = 0.5;
 
 class Player{
     constructor() {
@@ -124,6 +128,42 @@ class Bg{
     }
 }
 
+// class Goomba{
+//     constructor({position, speed}) {
+//         this.position = {
+//             x: position.x,
+//             y: position.y,
+//         }
+        
+//         this.speed = {
+//             x: speed.x,
+//             y: speed.y
+//         }
+
+//         this.width = 50;
+//         this.height = 50;
+//     }
+
+//     draw() {
+//         ctx.fillStyle = 'red';
+//         ctx.fillRect(this.position.x, this.position.y, this.width,this.height)
+//     }
+
+//     update() { 
+//         this.draw()
+
+//         this.position.x += this.speed.x
+//         this.position.y += this.speed.y
+
+        
+//         if (this.position.y +this.height + this.speed.y <= canvas.height) {
+//             this.speed.y += gravity;
+//         }
+        
+//     }
+// }
+
+
 function init() {
     scrollOffset = 0;
     player = new Player();
@@ -137,6 +177,21 @@ function init() {
         new Bg(-3, -3, hillsImg),
         new Bg(900, 200, hillsImg),
     ] 
+
+    goombas = [
+        new Goomba(
+            {
+                position: {
+                    x: 800,
+                    y:100
+                },
+                speed: {
+                    x: -0.3,
+                    y:0
+                }
+            }
+        )
+    ]
 }
 
 let scrollOffset = 0;
@@ -146,6 +201,7 @@ let player = new Player();
 // let bgs = [new Bg(-3, -3, bgImg), new Bg(-3, -3, hillsImg), new Bg(900, 200, hillsImg),]
 let platforms = [];
 let bgs = [];
+let goombas = [];
 
 const keys = {
     right: {
@@ -169,6 +225,10 @@ function animate() {
     })
     platforms.forEach(platform => {
         platform.draw();
+    })
+
+    goombas.forEach(goomba => {
+        goomba.update();
     })
     player.update();
 
@@ -201,7 +261,17 @@ function animate() {
         }
     }
 
+    // COLLITION
     platforms.forEach(platform => {    
+        if (
+            player.position.y + player.height <= platform.position.y &&
+            player.position.y + player.height + player.velocity.y >= platform.position.y &&
+            player.position.x + player.width >= platform.position.x &&
+            player.position.x <= platform.position.x + platform.width
+        ) {
+            player.velocity.y =0
+        }
+
         if (
             player.position.y + player.height <= platform.position.y &&
             player.position.y + player.height + player.velocity.y >= platform.position.y &&
@@ -223,9 +293,13 @@ function animate() {
     }
 }
 
-init();
-animate()
+// init();
+// animate()
 
+window.onload = () => {
+  init();
+  animate();
+};
 
 
 window.addEventListener('keydown', (e) => {
